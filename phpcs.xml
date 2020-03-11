@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<ruleset name="PSR">
+    <description>coding standart</description>
+    <rule ref="PSR12"/>
+
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="180"/>
+            <property name="absoluteLineLimit" value="0"/>
+        </properties>
+    </rule>
+
+    <file>src/</file>
+    <exclude-pattern>public/debug</exclude-pattern>
+    <exclude-pattern>vendor</exclude-pattern>
+    <exclude-pattern>database/seeds</exclude-pattern>
+    <exclude-pattern>database/migrations</exclude-pattern>
+</ruleset>

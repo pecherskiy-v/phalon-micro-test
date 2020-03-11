@@ -1,0 +1,111 @@
+version: "2.2"
+
+volumes:
+  redis_data:
+    driver: local
+
+services:
+  php72-site:
+    container_name: ${COMPOSE_PROJECT_NAME}-php72-site
+    build: ./Site
+    volumes:
+      - "./Site/:/var/www/site"
+      - "~/.ssh:/var/www/.ssh"
+    restart: always
+    working_dir: /var/www/site/src
+    depends_on:
+      - redis
+    environment:
+      - PHP_XDEBUG_IDEKEY=PSTORM
+      - PHP_XDEBUG_DEFAULT_ENABLE=0
+      - PHP_XDEBUG_REMOTE_ENABLE=0
+      - PHP_XDEBUG_REMOTE_AUTOSTART=0
+      - PHP_XDEBUG_REMOTE_CONNECT_BACK=0
+      - PHP_XDEBUG_PROFILER_ENABLE=0
+      - PHP_XDEBUG_REMOTE_HOST=host.docker.internal
+      - PHP_XDEBUG_REMOTE_PORT=9006
+      - PHP_XDEBUG_REMOTE_MODE=req
+      - PHP_IDE_CONFIG=serverName=SITE-CLI
+      - COMPOSER_MEMORY_LIMIT=-1
+    networks:
+      - phalcon-components-net
+
+  php72-users:
+    container_name: ${COMPOSE_PROJECT_NAME}-php72-users
+    build: ./Users
+    volumes:
+      - "./Users/:/var/www/users"
+      - "~/.ssh:/var/www/.ssh"
+    restart: always
+    working_dir: /var/www/users/src
+    depends_on:
+      - redis
+    environment:
+      - PHP_XDEBUG_IDEKEY=PSTORM
+      - PHP_XDEBUG_DEFAULT_ENABLE=0
+      - PHP_XDEBUG_REMOTE_ENABLE=0
+      - PHP_XDEBUG_REMOTE_AUTOSTART=0
+      - PHP_XDEBUG_REMOTE_CONNECT_BACK=0
+      - PHP_XDEBUG_PROFILER_ENABLE=0
+      - PHP_XDEBUG_REMOTE_HOST=host.docker.internal
+      - PHP_XDEBUG_REMOTE_PORT=9006
+      - PHP_XDEBUG_REMOTE_MODE=req
+      - PHP_IDE_CONFIG=serverName=USERS-CLI
+      - COMPOSER_MEMORY_LIMIT=-1
+    networks:
+      - phalcon-components-net
+
+  nginx:
+    container_name: ${COMPOSE_PROJECT_NAME}-nginx
+    restart: always
+    image: nginx:latest
+    depends_on:
+      - php72-site
+      - php72-users
+    ports:
+      - "${nginx_port_on_host}:80"
+    links:
+      - php72-site
+      - php72-users
+    volumes:
+      - "./nginx/logs:/var/log/nginx"
+      - "./nginx/nginx.conf:/etc/nginx/nginx.conf"
+      - "./nginx/conf.d:/etc/nginx/conf.template"
+      - "./Site/:/var/www/site"
+      - "./Users/:/var/www/users"
+    environment:
+      - NGINX_PORT=80
+      - PHP_FPM_PORT=9000
+
+      - SITE_NGINX_HOST=${nginx_local_hostname_site}
+      - SITE_NGINX_PORT=${nginx_port_on_host_site}
+      - SITE_FPM_HOST=${COMPOSE_PROJECT_NAME}-php72-site
+      - SITE_PREFIX=site
+
+      - USER_NGINX_HOST=${nginx_local_hostname_user}
+      - USER_NGINX_PORT=${nginx_port_on_host_user}
+      - USER_FPM_HOST=${COMPOSE_PROJECT_NAME}-php72-user
+      - USER_PREFIX=users
+
+      - TZ=UTC
+    # command подменит в шаблоне вхоста переменные на значения из заданных переменных окружения
+    command: /bin/bash -c "envsubst \"`for v in $$(compgen -v);do printf '$${%s} ' $$v;done`'\" < /etc/nginx/conf.template/site.conf > /etc/nginx/conf.d/site.conf && envsubst \"`for v in $$(compgen -v);do printf '$${%s} ' $$v;done`'\" < /etc/nginx/conf.template/user.conf > /etc/nginx/conf.d/user.conf && nginx -g 'daemon off;'"
+
+    networks:
+      - phalcon-components-net
+
+  redis:
+    container_name: ${COMPOSE_PROJECT_NAME}-redis
+    image: "redis:latest"
+    volumes:
+      - "redis_data:/var/opt/redis"
+    restart: always
+    networks:
+      - phalcon-components-net
+
+networks:
+  phalcon-components-net:
+    name: phalcon-components-net
+    driver: bridge
+    ipam:
+      driver: default
