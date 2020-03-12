@@ -1,0 +1,10 @@
+2020/03/11 23:32:50 [emerg] 1#1: host not found in upstream "phalkon-micto-php72-user" in /etc/nginx/conf.d/user.conf:33
+2020/03/11 23:32:53 [emerg] 1#1: host not found in upstream "phalkon-micto-php72-user" in /etc/nginx/conf.d/user.conf:33
+2020/03/11 23:32:56 [emerg] 1#1: host not found in upstream "phalkon-micto-php72-user" in /etc/nginx/conf.d/user.conf:33
+2020/03/11 23:32:59 [emerg] 1#1: host not found in upstream "phalkon-micto-php72-user" in /etc/nginx/conf.d/user.conf:33
+2020/03/11 23:33:02 [emerg] 1#1: host not found in upstream "phalkon-micto-php72-user" in /etc/nginx/conf.d/user.conf:33
+2020/03/11 23:33:06 [emerg] 1#1: host not found in upstream "phalkon-micto-php72-user" in /etc/nginx/conf.d/user.conf:33
+2020/03/11 23:33:12 [emerg] 1#1: host not found in upstream "phalkon-micto-php72-user" in /etc/nginx/conf.d/user.conf:33
+2020/03/11 23:33:20 [emerg] 1#1: host not found in upstream "phalkon-micto-php72-user" in /etc/nginx/conf.d/user.conf:33
+2020/03/11 23:33:35 [emerg] 1#1: host not found in upstream "phalkon-micto-php72-user" in /etc/nginx/conf.d/user.conf:33
+2020/03/11 23:34:03 [emerg] 1#1: host not found in upstream "phalkon-micto-php72-user" in /etc/nginx/conf.d/user.conf:33

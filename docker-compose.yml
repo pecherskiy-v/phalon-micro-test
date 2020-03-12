@@ -13,8 +13,6 @@ services:
       - "~/.ssh:/var/www/.ssh"
     restart: always
     working_dir: /var/www/site/src
-    depends_on:
-      - redis
     environment:
       - PHP_XDEBUG_IDEKEY=PSTORM
       - PHP_XDEBUG_DEFAULT_ENABLE=0
@@ -38,8 +36,6 @@ services:
       - "~/.ssh:/var/www/.ssh"
     restart: always
     working_dir: /var/www/users/src
-    depends_on:
-      - redis
     environment:
       - PHP_XDEBUG_IDEKEY=PSTORM
       - PHP_XDEBUG_DEFAULT_ENABLE=0
@@ -84,7 +80,7 @@ services:
 
       - USER_NGINX_HOST=${nginx_local_hostname_user}
       - USER_NGINX_PORT=${nginx_port_on_host_user}
-      - USER_FPM_HOST=${COMPOSE_PROJECT_NAME}-php72-user
+      - USER_FPM_HOST=${COMPOSE_PROJECT_NAME}-php72-users
       - USER_PREFIX=users
 
       - TZ=UTC
@@ -94,14 +90,14 @@ services:
     networks:
       - phalcon-components-net
 
-  redis:
-    container_name: ${COMPOSE_PROJECT_NAME}-redis
-    image: "redis:latest"
-    volumes:
-      - "redis_data:/var/opt/redis"
-    restart: always
-    networks:
-      - phalcon-components-net
+#  redis:
+#    container_name: ${COMPOSE_PROJECT_NAME}-redis
+#    image: "redis:latest"
+#    volumes:
+#      - "redis_data:/var/opt/redis"
+#    restart: always
+#    networks:
+#      - phalcon-components-net
 
 networks:
   phalcon-components-net:
