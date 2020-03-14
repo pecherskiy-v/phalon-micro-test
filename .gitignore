@@ -1,3 +1,5 @@
 composer.phar
 */vendor/
 /.idea/
+Site/src/.env
+/nginx/logs/access.log

@@ -7,6 +7,7 @@ use Phalcon\Config\ConfigFactory;
 use Phalcon\Logger;
 use Phalcon\Logger\Adapter\Stream;
 use Phalcon\Events\Manager;
+use App\Middleware\NotFoundMiddleware;
 use App\Middleware\ResponseMiddleware;
 use App\Formatter\Formatter;
 

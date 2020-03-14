@@ -1,7 +1,7 @@
 {
-  "name": "pecherskiy-v/phalcon-micro-test-users",
+  "name": "pecherskiy-v/phalcon-micro-test-site",
   "license": "",
-  "description": "Users micro service",
+  "description": "Site micro service",
   "keywords": [
     "microservice"
   ],
@@ -12,7 +12,8 @@
   "require": {
     "ext-json": "*",
     "ext-pdo": "*",
-    "phalcon/devtools": "^4"
+    "phalcon/devtools": "^4",
+    "josegonzalez/dotenv": "3.*"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master"
