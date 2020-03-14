@@ -7,6 +7,8 @@ use Phalcon\Http\Response;
 use Phalcon\Logger;
 use Phalcon\Config;
 use App\Validators\LoginValidation;
+use GuzzleHttp\Client;
+use App\JsonRpc\BaseJsonRpc;
 
 /**
  * @property Logger log
@@ -43,13 +45,12 @@ class SiteController extends Controller
         if (count($messages)) {
             $content = 'fail<br>';
             foreach ($messages as $message) {
-                $content .= $message. '<br>';
+                $content .= $message . '<br>';
             }
         }
 
-        $login    = $this->request->getPost('login');
+        $login = $this->request->getPost('login');
         $password = $this->request->getPost('password');
-
 
         $response = new Response();
         $response->setContent($content);
@@ -60,6 +61,27 @@ class SiteController extends Controller
     {
         $response = new Response();
         $response->setContent('404');
+        return $response;
+    }
+
+    public function json():Response
+    {
+        $query = new BaseJsonRpc();
+        $query->method = 'loginValid/check';
+        $query->params = [
+            'login' => 'admin',
+            'password' => 'test'
+        ];
+
+        $url = $this->config->get('rpc')->get('user');
+
+        $client = new Client();
+        $result = $client->request('POST', $url, ['json' => $query]);
+
+        $result = json_decode($result->getBody()->getContents());
+
+        $response = new Response();
+        $response->setContent($result->result);
         return $response;
     }
 }

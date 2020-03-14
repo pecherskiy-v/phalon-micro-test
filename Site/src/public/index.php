@@ -26,6 +26,8 @@ $appConfig = $factory->newInstance('php', __DIR__ . '/../Config/App.php');
 $config->merge($appConfig);
 $loggingConfig = $factory->newInstance('php', __DIR__ . '/../Config/Logging.php');
 $config->merge($loggingConfig);
+$rpcConfig = $factory->newInstance('php', __DIR__ . '/../Config/RemoteComponent.php');
+$config->merge($rpcConfig);
 
 $manager = new Manager();
 $manager->attach('micro', new CORSMiddleware());

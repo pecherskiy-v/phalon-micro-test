@@ -1,6 +1,5 @@
 <?php
 
-use App\Controllers\SiteController;
+use App\Controllers\RpcController;
 
-$application->get('/', [new SiteController(), 'index']);
-$application->post('/', [new SiteController(), 'login']);
+$application->post('/rpc', [new RpcController(), 'main']);

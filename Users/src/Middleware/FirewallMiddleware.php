@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Middleware;
+
 use Phalcon\Events\Event;
 use Phalcon\Http\Request;
 use Phalcon\Http\Response;
@@ -18,7 +20,7 @@ class FirewallMiddleware implements MiddlewareInterface
      * @param Event $event
      * @param Micro $application
      *
-     * @returns bool
+     * @return bool
      */
     public function beforeHandleRoute(
         Event $event,
@@ -52,7 +54,7 @@ class FirewallMiddleware implements MiddlewareInterface
     /**
      * @param Micro $application
      *
-     * @returns bool
+     * @return bool
      */
     public function call(Micro $application)
     {
