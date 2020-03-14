@@ -20,12 +20,20 @@ class ResponseMiddleware implements MiddlewareInterface
      */
     public function call(Micro $application): bool
     {
-        // фиксация ответов в лог
+        $payload = [
+            'code'    => 200,
+            'status'  => 'success',
+            'message' => '',
+            'payload' => $application->getReturnedValue(),
+        ];
+
         $application
             ->response
-            ->setContentType('text/html')
-            ->sendHeaders()
-            ->send();
+            ->setJsonContent($payload)
+            ->send()
+        ;
+
+        // фиксация ответов в лог
         $application->log->debug('response', [$application->request->getServerAddress()]);
 
         return true;

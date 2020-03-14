@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Middleware;
+
 use Phalcon\Events\Event;
 use Phalcon\Http\Request;
 use Phalcon\Http\Response;
@@ -18,12 +20,12 @@ class CORSMiddleware implements MiddlewareInterface
      * @param Event $event
      * @param Micro $application
      *
-     * @returns bool
+     * @return bool
      */
     public function beforeHandleRoute(
         Event $event,
         Micro $application
-    ) {
+    ):bool {
         if ($application->request->getHeader('ORIGIN')) {
             $origin = $application
                 ->request
@@ -53,14 +55,15 @@ class CORSMiddleware implements MiddlewareInterface
                 'true'
             )
         ;
+        return true;
     }
 
     /**
      * @param Micro $application
      *
-     * @returns bool
+     * @return bool
      */
-    public function call(Micro $application)
+    public function call(Micro $application):bool
     {
         return true;
     }

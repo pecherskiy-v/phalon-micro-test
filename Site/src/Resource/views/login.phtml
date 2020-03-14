@@ -84,7 +84,15 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="esd-block-html">
-                                                                <form action="/" method="post"><label for="email">Email:</label><input type="email" id="email" name="email"><br><br><label for="pwd">Password:</label><input type="password" id="pwd" name="pwd" minlength="8"><br><br><input type="submit"></form>
+                                                                <form action="/" method="post">
+                                                                    <input type='hidden'
+                                                                           name='<?php echo $this->security->getTokenKey() ?>'
+                                                                           value='<?php echo $this->security->getToken() ?>'/>
+                                                                    <label for="login">login:</label>
+                                                                    <input type="text" id="login" name="login" required="true"><br><br>
+                                                                    <label for="pwd">Password:</label>
+                                                                    <input type="password" id="pwd" name="password" minlength="5" required><br><br>
+                                                                    <input type="submit"></form>
                                                             </td>
                                                         </tr>
                                                         <tr>

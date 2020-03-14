@@ -26,7 +26,15 @@ class ResponseMiddleware implements MiddlewareInterface
             ->setContentType('text/html')
             ->sendHeaders()
             ->send();
-        $application->log->debug('response', [$application->request->getServerAddress()]);
+        $application->log->debug(
+            'response',
+            [
+                'ServerAddress' => $application->request->getServerAddress(),
+                'Query' => $application->request->getQuery(true),
+                'Method' => $application->request->getMethod(),
+                'HTTPReferer' => $application->request->getHTTPReferer()
+            ]
+        );
 
         return true;
     }
