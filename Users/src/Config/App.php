@@ -9,5 +9,7 @@ return [
         'url'      => getenv('APP_URL'),
         'version'  => getenv('VERSION'),
         'time'     => microtime(true),
+        'migrationsDir' => 'DataBase/Migrations',
+        'migrationsTsBased' => true,
     ],
 ];

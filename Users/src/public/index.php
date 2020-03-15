@@ -7,13 +7,16 @@ use Phalcon\Config\ConfigFactory;
 use Phalcon\Logger;
 use Phalcon\Logger\Adapter\Stream;
 use Phalcon\Events\Manager;
-use Phalcon\Mvc\View\Simple;
 use Phalcon\Session;
+use Phalcon\Session\Adapter\Stream as SessionStream;
+use Phalcon\Db\Adapter\Pdo\Sqlite;
 use App\Formatter\Formatter;
 use App\Middleware\RequestMiddleware;
 use App\Middleware\ResponseMiddleware;
+use Phalcon\Mvc\Model\MetaData\Memory;
+use Phalcon\Mvc\Model\Manager as ModelManager;
+
 // use App\Middleware\FirewallMiddleware;
-use Phalcon\Session\Adapter\Stream as SessionStream;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
@@ -26,6 +29,8 @@ $appConfig = $factory->newInstance('php', __DIR__ . '/../Config/App.php');
 $config->merge($appConfig);
 $loggingConfig = $factory->newInstance('php', __DIR__ . '/../Config/Logging.php');
 $config->merge($loggingConfig);
+$dbConfig = $factory->newInstance('php', __DIR__ . '/../Config/DataBase.php');
+$config->merge($dbConfig);
 
 $manager = new Manager();
 // $manager->attach('micro', new FirewallMiddleware());
@@ -85,7 +90,6 @@ $container->set(
         return $logger;
     }
 );
-
 $container->setShared(
     'session',
     function () {
@@ -98,6 +102,11 @@ $container->setShared(
         return $session;
     }
 );
+$container->set('db', new Sqlite($config->get('db')->toArray()));
+$container->set('modelsManager', new ModelManager());
+$container->set('modelsMetadata', new Memory());
+
+$container->set('loginValidRpc', new App\Managers\LoginValidRpc);
 
 try {
     $application = new Micro($container);

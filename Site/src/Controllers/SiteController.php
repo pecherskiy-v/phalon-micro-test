@@ -41,36 +41,25 @@ class SiteController extends Controller
 
         $messages = $validation->validate($this->request->getPost());
 
-        $content = 'ok';
         if (count($messages)) {
             $content = 'fail<br>';
             foreach ($messages as $message) {
                 $content .= $message . '<br>';
             }
+
+            $response = new Response();
+            $response->setContent($content);
+            return $response;
         }
 
-        $login = $this->request->getPost('login');
-        $password = $this->request->getPost('password');
+        $login = $this->request->getPost('login', 'string');
+        $password = $this->request->getPost('password', 'string');
 
-        $response = new Response();
-        $response->setContent($content);
-        return $response;
-    }
-
-    public function notFound(): Response
-    {
-        $response = new Response();
-        $response->setContent('404');
-        return $response;
-    }
-
-    public function json():Response
-    {
         $query = new BaseJsonRpc();
         $query->method = 'loginValid/check';
         $query->params = [
-            'login' => 'admin',
-            'password' => 'test'
+            'login' => $login,
+            'password' => $password
         ];
 
         $url = $this->config->get('rpc')->get('user');
@@ -82,6 +71,13 @@ class SiteController extends Controller
 
         $response = new Response();
         $response->setContent($result->result);
+        return $response;
+    }
+
+    public function notFound(): Response
+    {
+        $response = new Response();
+        $response->setContent('404');
         return $response;
     }
 }
