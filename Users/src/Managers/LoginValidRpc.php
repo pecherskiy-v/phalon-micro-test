@@ -10,7 +10,6 @@ class LoginValidRpc
     public function check(string $login, string $password)
     {
         // return json_encode([$login, $password]);
-        // $user = new Users();
 
         /**
          * @var Users
@@ -26,7 +25,7 @@ class LoginValidRpc
 
         $security = Di::getDefault()->getSecurity();
 
-        if (false !== $user) {
+        if (null !== $user) {
             $check = $security->checkHash($password, $user->password);
             if (true === $check) {
                 // OK

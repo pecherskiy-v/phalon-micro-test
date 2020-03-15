@@ -68,9 +68,11 @@ class SiteController extends Controller
         $result = $client->request('POST', $url, ['json' => $query]);
 
         $result = json_decode($result->getBody()->getContents());
+        // $result = $result->getBody()->getContents();
 
         $response = new Response();
         $response->setContent($result->result);
+        // $response->setContent($result);
         return $response;
     }
 
